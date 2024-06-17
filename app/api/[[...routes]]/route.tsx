@@ -54,7 +54,7 @@ app.frame('/', (c) => {
 })
 
 app.frame('/voted', (c) => {
-  const { buttonValue } = c
+  const { buttonValue, verified} = c
   if (buttonValue === 'yes') {
     voteCounts.yes += 1
   } else if (buttonValue === 'no') {
@@ -77,9 +77,9 @@ app.frame('/voted', (c) => {
         width: '100%',
       }}
     >
-      You voted: {buttonValue}
-      Yes: {voteCounts.yes}
-      No: {voteCounts.no}
+      {`You voted: ${buttonValue}
+      \nYes: ${voteCounts.yes}
+      \nNo: ${voteCounts.no}\n ${verified}`}
     </div>
     
     )
