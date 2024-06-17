@@ -26,8 +26,22 @@ const app = new Frog({
 app.frame('/', (c) => {
   return c.res({
     image: (
-      <div style={{ color: 'white', display: 'flex', fontSize: 60 }}>
-        <p>There will be over a 10,000 Kramer predictions before 6/29 midnight</p>
+      <div
+              style={{
+                alignItems: 'center',
+                background: 'white',
+                backgroundSize: '100% 100%',
+                display: 'flex',
+                flexDirection: 'column',
+                flexWrap: 'nowrap',
+                height: '100%',
+                justifyContent: 'center',
+                textAlign: 'center',
+                width: '100%',
+              }}
+            >
+      
+        There will be over a 10,000 Kramer predictions before 6/29 midnight
         </div>
     ), 
     intents: [
@@ -47,7 +61,20 @@ app.frame('/voted', (c) => {
 
   return c.res({
     image: (
-      <div style={{ color: 'white', display: 'flex', fontSize: 60 }}>
+      <div
+      style={{
+        alignItems: 'center',
+        background: 'white',
+        backgroundSize: '100% 100%',
+        display: 'flex',
+        flexDirection: 'column',
+        flexWrap: 'nowrap',
+        height: '100%',
+        justifyContent: 'center',
+        textAlign: 'center',
+        width: '100%',
+      }}
+    >
       You voted: {buttonValue}
       Yes: {voteCounts.yes}
       No: {voteCounts.no}
