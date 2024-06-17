@@ -43,8 +43,7 @@ app.frame('/', (c) => {
                 width: '100%',
               }}
             >
-      
-        {verified ? `There will be over 10,000 Kramer predictions before 6/29 midnight ${verified}` : "Please 1verify"}
+        {`There will be over 10,000 Kramer predictions before 6/29 midnight ${verified}`}
         </div>
     ), 
     intents: [
