@@ -17,13 +17,15 @@ const app = new Frog({
   assetsPath: '/',
   basePath: '/api',
   // Supply a Hub to enable frame verification.
-  //hub: pinata()
+  hub: pinata()
 })
 
 // Uncomment to use Edge Runtime
 // export const runtime = 'edge'
 
 app.frame('/', (c) => {
+  const { verified } = c
+
   return c.res({
     image: (
       <div
@@ -41,7 +43,7 @@ app.frame('/', (c) => {
               }}
             >
       
-        There will be over a 10,000 Kramer predictions before 6/29 midnight
+        {verified ? `There will be over 10,000 Kramer predictions before 6/29 midnight ${verified}` : "Please verify"}
         </div>
     ), 
     intents: [
