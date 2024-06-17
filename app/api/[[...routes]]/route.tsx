@@ -17,8 +17,8 @@ const app = new Frog({
   assetsPath: '/',
   basePath: '/api',
   // Supply a Hub to enable frame verification.
+  verify: 'silent',
   hub: pinata(),
-  verify: true,
 })
 
 // Uncomment to use Edge Runtime
