@@ -10,7 +10,7 @@ const Home = () => {
       height={"100%"}
       alignItems="center"
       justifyContent="flex-end"
-      //backgroundImage={`url("${process.env.NEXT_PUBLIC_VERCEL_URL}/home.png")`}
+      backgroundImage={`url("${process.env.NEXT_PUBLIC_VERCEL_URL}/home.png")`}
       backgroundSize="cover"
     >
       <Box
@@ -51,7 +51,6 @@ const Home = () => {
             <Text size="14" weight="900" color="gray100">
               WILL THERE BE OVER 10,000 KRAMER PREDICTIONS BEFORE JUNE 29TH MIDNIGHT?
             </Text>
-            <Text color='gray100'>ENV {process.env.NEXT_PUBLIC_VERCEL_URL}</Text>
           </Column>
           <Column
             backgroundColor="green"
