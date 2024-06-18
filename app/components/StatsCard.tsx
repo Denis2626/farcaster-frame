@@ -3,8 +3,10 @@ import { Box, Text, Rows, Row, vars } from "../ui";
 
 const StatsCard = ({
   voteCounts = { yes: 0, no: 0 },
+  userVote = { vote: "", timestamp: "", fid: "" },
 }: {
-  voteCounts: { yes?: number; no?: number };
+  voteCounts: { yes: number; no: number };
+  userVote: { vote?: string; timestamp?: string, fid: string } ;
 }) => {
 
   return (
@@ -30,10 +32,11 @@ const StatsCard = ({
         padding="16"
       >
         <Rows gap="16" height="100%" width={"100%"}>
-          <Row height="1/3">
+          <Row height="1/3" justifyContent="space-between">
             <Text size="24" weight="900" color={"gray100"}>
               Vote Statistics
             </Text>
+            <Text>My vote: </Text>
           </Row>
           <Row height="1/7" backgroundColor={'green'} width={"256"}>
             <Text size="16" weight="900" color={"text100"} >

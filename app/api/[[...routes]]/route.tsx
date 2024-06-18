@@ -97,10 +97,11 @@ app.frame("/vote", (c) => {
 });
 
 app.frame("/stats", (c) => {
-  const { verified } = c; // Assume userId is passed in the context
+  const { verified, frameData } = c; // Assume userId is passed in the context
+  const { fid } = frameData || {};
 
   //TODO SEND TO UNVERIFIED CARD
-  if (!verified) {
+  if (!verified || !fid) {
     return c.res({
       image: <ErrorCard message="Unverified User" />,
       intents: [
@@ -111,8 +112,19 @@ app.frame("/stats", (c) => {
     });
   }
 
+  if (!userVotes.has(fid)) {
+    return c.res({
+      image: <ErrorCard message="Vote to get stats" />,
+      intents: [
+        <Button value="home" action="/">
+          Back
+        </Button>,
+      ],
+    });
+  }
+
   return c.res({
-    image: <StatsCard voteCounts={voteCounts} />,
+    image: <StatsCard voteCounts={voteCounts} userVote={{ ...userVotes.get(fid), fid: fid.toString() }} />,
     intents: [
       <Button value="home" action="/">
         Back
