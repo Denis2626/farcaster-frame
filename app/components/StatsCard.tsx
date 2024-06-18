@@ -34,9 +34,9 @@ const StatsCard = ({
         <Rows gap="16" height="100%" width={"100%"}>
           <Row height="1/3" justifyContent="space-between">
             <Text size="24" weight="900" color={"gray100"}>
-              Vote Statistics
+              Vote Statistics 
             </Text>
-            <Text>My vote: </Text>
+            <Text color={"gray100"}>{userVote.fid} - {userVote.vote} - {userVote.timestamp}</Text>
           </Row>
           <Row height="1/7" backgroundColor={'green'} width={"256"}>
             <Text size="16" weight="900" color={"text100"} >
