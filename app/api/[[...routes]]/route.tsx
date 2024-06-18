@@ -1,94 +1,127 @@
 /** @jsxImportSource frog/jsx */
 
-import { Button, Frog, TextInput } from 'frog'
-import { devtools } from 'frog/dev'
-// import { neynar } from 'frog/hubs'
-import { handle } from 'frog/next'
-import { serveStatic } from 'frog/serve-static'
-import { pinata } from 'frog/hubs'
+import { Button, Frog, TextInput } from "frog";
+import { devtools } from "frog/dev";
+import { handle } from "frog/next";
+import { serveStatic } from "frog/serve-static";
+import { pinata } from "frog/hubs";
+import Home from "@/app/components/Home";
+import { vars } from "@/app/ui";
+import VoteCard from "@/app/components/VoteCard";
+import StatsCard from "@/app/components/StatsCard";
+import ErrorCard from "@/app/components/ErrorCard";
 
 // In-memory storage for votes
 let voteCounts = {
   yes: 0,
-  no: 0
+  no: 0,
 };
 
+// Map to store user votes
+let userVotes = new Map<number, { vote: string; timestamp: string }>();
+
 const app = new Frog({
-  assetsPath: '/',
-  basePath: '/api',
+  assetsPath: "/",
+  basePath: "/api",
   // Supply a Hub to enable frame verification.
-  verify: 'silent',
+  verify: "silent",
   hub: pinata(),
-})
+  ui: {
+    vars,
+  },
+});
 
 // Uncomment to use Edge Runtime
 // export const runtime = 'edge'
 
-app.frame('/', (c) => {
-  const { verified } = c
+app.frame("/", (c) => {
+  return c.res({
+    image: <Home />,
+    intents: [
+      <Button value="yes" action="/vote">
+        Yes
+      </Button>,
+      <Button value="no" action="/vote">
+        No
+      </Button>,
+    ],
+  });
+});
+
+app.frame("/vote", (c) => {
+  const { frameData, buttonValue, verified } = c; // Assume userId is passed in the context
+
+  const { fid } = frameData || {};
+
+  //TODO SEND TO UNVERIFIED CARD
+  if (!verified || !fid) {
+    return c.res({
+      image: <ErrorCard message="Unverified User" />,
+      intents: [
+        <Button value="home" action="/">
+          Back
+        </Button>,
+      ],
+    });
+  }
+
+  if (userVotes.has(fid)) {
+    return c.res({
+      image: <ErrorCard message="Already Voted" />,
+      intents: [
+        <Button value="home" action="/">
+          Back
+        </Button>,
+        <Button value="stats" action="/stats">
+          Stats
+        </Button>,
+      ],
+    });
+  }
+  if (buttonValue === "yes") {
+    voteCounts.yes += 1;
+  } else if (buttonValue === "no") {
+    voteCounts.no += 1;
+  }
+  const timestamp = new Date().toISOString();
+  userVotes.set(fid!, { vote: buttonValue!, timestamp });
 
   return c.res({
-    image: (
-      <div
-              style={{
-                alignItems: 'center',
-                background: 'white',
-                backgroundSize: '100% 100%',
-                display: 'flex',
-                flexDirection: 'column',
-                flexWrap: 'nowrap',
-                height: '100%',
-                justifyContent: 'center',
-                textAlign: 'center',
-                width: '100%',
-              }}
-            >
-        {`There will be over 10,000 Kramer predictions before 6/29 midnight ${verified}`}
-        </div>
-    ), 
+    image: <VoteCard fid={fid?.toString() || "No FID"} />,
     intents: [
-      <Button value="yes" action="/voted">Yes</Button>,
-      <Button value="no" action="/voted">No</Button>,
+      <Button value="stats" action="/stats">
+        Stats
+      </Button>,
     ],
-  })
-})
+  });
+});
 
-app.frame('/voted', (c) => {
-  const { frameData, verified, buttonValue} = c
-  const { fid } = frameData || {}
+app.frame("/stats", (c) => {
+  const { verified } = c; // Assume userId is passed in the context
 
-  if (buttonValue === 'yes') {
-    voteCounts.yes += 1
-  } else if (buttonValue === 'no') {
-    voteCounts.no += 1
+  //TODO SEND TO UNVERIFIED CARD
+  if (verified) {
+    return c.res({
+      image: <ErrorCard message="Unverified User" />,
+      intents: [
+        <Button value="home" action="/">
+          Back
+        </Button>,
+      ],
+    });
   }
 
   return c.res({
-    image: (
-      <div
-      style={{
-        alignItems: 'center',
-        background: 'white',
-        backgroundSize: '100% 100%',
-        display: 'flex',
-        flexDirection: 'column',
-        flexWrap: 'nowrap',
-        height: '100%',
-        justifyContent: 'center',
-        textAlign: 'center',
-        width: '100%',
-      }}
-    >
-      {`You voted: ${buttonValue}
-      \nYes: ${voteCounts.yes}
-      \nNo: ${voteCounts.no}\n ${verified} ${fid?.toString()}`}
-    </div>
-    
-    )
-  })
-})
+    image: <StatsCard voteCounts={voteCounts} />,
+    intents: [
+      <Button value="home" action="/">
+        Back
+      </Button>,
+    ],
+  });
+});
 
-devtools(app, { serveStatic })
+devtools(app, { serveStatic });
 
-export const GET = handle(app)
-export const POST = handle(app)
+export const GET = handle(app);
+export const POST = handle(app);
