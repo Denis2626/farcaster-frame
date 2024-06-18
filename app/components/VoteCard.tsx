@@ -48,11 +48,11 @@ const VoteCard = ({ userVote }: {  userVote: { vote?: string; timestamp?: string
             width="1/2"
             padding={"20"}
           >
-            <Text size="48" weight="900" color={"gray100"} align="center">
+            <Text size="32" weight="900" color={"gray100"} align="center">
               I voted {userVote.vote}
             </Text>
-            <Text size={"32"}color={"gray100"}>FID: {userVote.fid}</Text>
-            <Text size={"14"}color={"gray100"}>{formattedTimestamp}</Text>
+            <Text size={"24"}color={"gray100"}>FID: {userVote.fid}</Text>
+            <Text size={"16"}color={"gray100"}>{formattedTimestamp}</Text>
           </Column>
         </Columns>
       </Box>

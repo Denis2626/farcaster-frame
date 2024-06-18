@@ -122,6 +122,7 @@ app.frame("/stats", (c) => {
       <Button value="home" action="/">
         Back
       </Button>,
+      <Button.Link href="https://github.com/DenisIvanov26/farcaster-frame">Github</Button.Link>,
     ],
   });
 });
