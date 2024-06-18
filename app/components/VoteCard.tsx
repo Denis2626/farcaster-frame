@@ -46,6 +46,7 @@ const VoteCard = ({ userVote }: {  userVote: { vote?: string; timestamp?: string
             justifyContent="center"
             alignItems="center"
             width="1/2"
+            padding={"20"}
           >
             <Text size="48" weight="900" color={"gray100"} align="center">
               I voted {userVote.vote}
