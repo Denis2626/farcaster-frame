@@ -100,7 +100,7 @@ app.frame("/stats", (c) => {
   const { verified } = c; // Assume userId is passed in the context
 
   //TODO SEND TO UNVERIFIED CARD
-  if (verified) {
+  if (!verified) {
     return c.res({
       image: <ErrorCard message="Unverified User" />,
       intents: [
