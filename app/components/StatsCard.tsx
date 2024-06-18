@@ -4,21 +4,9 @@ import { Box, Text, Rows, Row, vars } from "../ui";
 
 const StatsCard = ({
   voteCounts = { yes: 0, no: 0 },
-  userVote = { vote: "", timestamp: "", fid: "" },
 }: {
   voteCounts: { yes: number; no: number };
-  userVote: { vote?: string; timestamp?: string, fid: string } ;
 }) => {
-
-  const formattedTimestamp = userVote.timestamp ? new Date(userVote.timestamp).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    timeZoneName: 'short'
-  }) : '';
 
   return (
     <Box
@@ -47,7 +35,6 @@ const StatsCard = ({
             <Text size="24" weight="900" color={"gray100"}>
               Vote Statistics 
             </Text>
-            <Text color={"gray100"}>{userVote.fid} - {userVote.vote} - {formattedTimestamp}</Text>
           </Row>
           <Row height="1/7" backgroundColor={'green'} width={"256"}>
             <Text size="16" weight="900" color={"text100"} >

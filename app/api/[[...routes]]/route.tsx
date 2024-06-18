@@ -65,29 +65,18 @@ app.frame("/vote", (c) => {
     });
   }
 
-  if (userVotes.has(fid)) {
-    return c.res({
-      image: <ErrorCard message="Already Voted" />,
-      intents: [
-        <Button value="home" action="/">
-          Back
-        </Button>,
-        <Button value="stats" action="/stats">
-          Stats
-        </Button>,
-      ],
-    });
+  if (!userVotes.has(fid)) {
+    if (buttonValue === "yes") {
+      voteCounts.yes += 1;
+    } else if (buttonValue === "no") {
+      voteCounts.no += 1;
+    }
+    const timestamp = new Date().toISOString();
+    userVotes.set(fid!, { vote: buttonValue!, timestamp });
   }
-  if (buttonValue === "yes") {
-    voteCounts.yes += 1;
-  } else if (buttonValue === "no") {
-    voteCounts.no += 1;
-  }
-  const timestamp = new Date().toISOString();
-  userVotes.set(fid!, { vote: buttonValue!, timestamp });
 
   return c.res({
-    image: <VoteCard fid={fid?.toString() || "No FID"} />,
+    image: <VoteCard userVote={{ ...userVotes.get(fid), fid: fid.toString() }} />,
     intents: [
       <Button value="stats" action="/stats">
         Stats
@@ -124,7 +113,11 @@ app.frame("/stats", (c) => {
   }
 
   return c.res({
-    image: <StatsCard voteCounts={voteCounts} userVote={{ ...userVotes.get(fid), fid: fid.toString() }} />,
+    image: (
+      <StatsCard
+        voteCounts={voteCounts}
+      />
+    ),
     intents: [
       <Button value="home" action="/">
         Back

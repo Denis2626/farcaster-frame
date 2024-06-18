@@ -1,7 +1,17 @@
 /** @jsxImportSource frog/jsx */
 import { Box, Column, Columns, Text, Image } from "../ui";
 
-const VoteCard = ({ fid  }: { fid: string }) => {
+const VoteCard = ({ userVote }: {  userVote: { vote?: string; timestamp?: string, fid: string } ; }) => {
+  const formattedTimestamp = userVote.timestamp ? new Date(userVote.timestamp).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    timeZoneName: 'short'
+  }) : '';
+  
   return (
     <Box
       backgroundColor="text"
@@ -40,7 +50,9 @@ const VoteCard = ({ fid  }: { fid: string }) => {
             <Text size="48" weight="900" color={"gray100"} align="center">
               I VOTED 
             </Text>
-            <Text size={"32"}color={"gray100"}>FID: {fid}</Text>
+            <Text size={"32"}color={"gray100"}>FID: {userVote.fid}</Text>
+            <Text size={"32"}color={"gray100"}>{userVote.vote}</Text>
+            <Text size={"24"}color={"gray100"}>{formattedTimestamp}</Text>
           </Column>
         </Columns>
       </Box>
